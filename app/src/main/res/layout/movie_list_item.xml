@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="350dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="268dp"
         android:layout_height="317dp"
-        app:cardElevation="10dp">
+        app:cardElevation="10dp"
+        app:cardCornerRadius="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +35,8 @@
                     android:text="Movie Title"
                     android:textColor="@color/black"
                     android:id="@+id/movie_title"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:paddingBottom="10dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,7 +49,8 @@
                         android:text="Release Date"
                         android:id="@+id/movie_release_date"
                         android:gravity="start"
-                        android:layout_weight="90"/>
+                        android:layout_weight="90"
+                        android:textColor="@color/black"/>
 
                     <TextView
                         android:id="@+id/movie_duraton"
@@ -56,7 +59,8 @@
                         android:layout_gravity="center"
                         android:layout_weight="10"
                         android:text="Duration"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textColor="@color/black"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -68,7 +72,7 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 android:id="@+id/rating_bar"
-                android:stepSize="0.1"/>
+                android:stepSize="0.1" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

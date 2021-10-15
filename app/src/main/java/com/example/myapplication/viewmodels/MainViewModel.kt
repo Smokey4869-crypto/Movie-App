@@ -1,6 +1,5 @@
 package com.example.myapplication.viewmodels
 
-import android.net.wifi.hotspot2.pps.Credential
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -10,8 +9,6 @@ import com.example.myapplication.repository.Repository
 import com.example.myapplication.utils.Credentials
 
 class MainViewModel: ViewModel() {
-//    private var key: MutableLiveData<String> = MutableLiveData()
-//    private var page: MutableLiveData<Int> = MutableLiveData()
     private val key = Credentials.API_KEY
     private var page: Int = 1
     private var movieId: MutableLiveData<Int> = MutableLiveData()
