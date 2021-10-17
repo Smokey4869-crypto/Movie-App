@@ -14,5 +14,7 @@ data class MovieModel (
     var movie_id: Int,
     var vote_average: Float,
     var duration: String,
-    var movie_overview: String): Parcelable {
+    var movie_overview: String,
+    var backdrop_path: String,
+    var genre_ids: List<Int>): Parcelable {
 }

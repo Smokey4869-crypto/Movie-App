@@ -54,11 +54,12 @@ class MovieAdapter(private var movieList: List<MovieModel>,
             vReleaseDate.text = movie.release_date
             vDuration.text = movie.duration
 
-            ratingBar.rating = movie.vote_average/2
-            if (ratingBar.rating <= ratingBar.numStars / 2) {
+            if (movie.vote_average/2 <= ratingBar.numStars/2) {
                 ratingBar.progressDrawable.colorFilter = BlendModeColorFilter(Color.RED, BlendMode.SRC_IN)
+                ratingBar.rating = movie.vote_average/2
             } else {
                 ratingBar.progressDrawable.colorFilter = BlendModeColorFilter(Color.GREEN, BlendMode.SRC_IN)
+                ratingBar.rating = movie.vote_average/2
             }
 
             //imageView using Glide Library
