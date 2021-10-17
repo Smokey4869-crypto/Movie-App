@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name = "AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
 
+    mov<style name="roundImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15dp</item>
+        <item name="background">#00000000</item>
+    </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#ffd700</item>
+        <item name="colorControlActivated">#ffd700</item>
     </style>
 </resources>
