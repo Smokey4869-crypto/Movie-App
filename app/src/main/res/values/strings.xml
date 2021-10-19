@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="movie_title">Movie title</string>
+    <string name="genre1_genre2_genre3">genre1 | genre2 | genre3</string>
+    <string name="movie_release_date">29/01/2001</string>
+    <string name="movie_backdrop">Movie Backdrop</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorites</string>
+    <string name="setting">Setting</string>
+    <string name="favorite_tab">fragment_favorite_tab</string>
+    <string name="home_tab">fragment_home_tab</string>
+    <string name="setting_tab">fragment_setting_tab</string>
 </resources>

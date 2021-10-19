@@ -1,44 +1,37 @@
 package com.example.myapplication
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.adapter.MovieAdapter
-import com.example.myapplication.models.MovieModel
-import com.example.myapplication.viewmodels.MainViewModel
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import com.example.myapplication.fragments.HomeTabFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
-    private val movieListViewModel: MainViewModel by viewModels()
-    private lateinit var vMovieList: RecyclerView
+    val homeTabFragment = HomeTabFragment()
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //---Configure RecyclerView MVVM
-        vMovieList = findViewById<RecyclerView>(R.id.recycler_view)
-        var movieList: List<MovieModel> = listOf()
-        val movieAdapter = MovieAdapter(movieList) {}
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        setupBottomNavigation()
 
-        configureRecyclerView(movieAdapter)
-        movieListViewModel.setQuery("Jack")
-        movieListViewModel.movies.observe(this,
-            { t ->
-                if (t != null) {
-                    movieAdapter.setMovieList(t)
-                    //Test call
-                    for (item: MovieModel in t)
-                        Log.v("Test Call", item.title )
-                }
-            })
-        //---RecyclerView MVVM
+        val navController: NavController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val appBarConfiguration: AppBarConfiguration = AppBarConfiguration.Builder(R.id.homeTabFragment, R.id.favoriteTabFragment, R.id.settingTabFragment).build()
+        //navigationUI
+        NavigationUI.setupWithNavController(bottomNavigationView, navController)
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.recycler_view, homeTabFragment)
+//            .commit()
 
         //Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -46,36 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         //searchView
         setupSearchView()
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        movieListViewModel.cancelJobs()
     }
-
-    //Configure RecyclerView
-    private fun configureRecyclerView(movieAdapter: MovieAdapter){
-        val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(this)
-        vMovieList.adapter = movieAdapter
-        vMovieList.layoutManager = linearLayoutManager
-
-        //Pagination
-        vMovieList.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1)) {
-                    //display the next search results on the page of api
-                    movieListViewModel.searchNextPage()
-                }
-            }
-        })
-    }
-    private fun showDetail(item: MovieModel) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("movie", item)
-        startActivity(intent)
-    }
-
 
     //get data from the SearchView & query the api to get the results
     private fun setupSearchView() {
@@ -86,10 +51,31 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    movieListViewModel.setQuery(query)
+                    homeTabFragment.setQuery(query)
+                    homeTabFragment.setPage(1)
+                    //Come back to home tab when searching
+                    Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment).navigate(R.id.homeTabFragment)
                 }
                 return false
             }
         })
+    }
+
+    private fun setupBottomNavigation() {
+        bottomNavigationView.setOnItemReselectedListener { item ->
+            when (item.itemId) {
+                R.id.homeBtn -> {
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.homeTabFragment)
+                }
+                R.id.favorite -> {
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.favoriteTabFragment)
+                }
+                R.id.setting -> {
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.settingTabFragment)
+                }
+                else -> false
+            }
+            true
+        }
     }
 }

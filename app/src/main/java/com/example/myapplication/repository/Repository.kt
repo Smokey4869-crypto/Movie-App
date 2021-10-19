@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.api.MyRetrofitBuilder
+import com.example.myapplication.models.Genre
 import com.example.myapplication.models.MovieModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -12,6 +13,7 @@ import java.io.IOException
 
 object Repository {
     var job: CompletableJob? = null
+    var total_pages: Int = 0
 
     fun getMovie(movieId: Int, key: String): LiveData<MovieModel>{
         job = Job()
@@ -51,6 +53,7 @@ object Repository {
                         withContext(Main) {
                             if (movieListResponse.isSuccessful) {
                                 value = movieListResponse.body()?.movies
+                                total_pages = movieListResponse.body()?.total_pages ?:
                                 Log.v("Response", "The call is successful")
                             } else {
                                 try {
@@ -65,6 +68,49 @@ object Repository {
                 }
             }
         }
+    }
+
+    fun getPopularMovie(key: String, page: Int): MutableLiveData<List<MovieModel>> {
+        job = Job()
+        return object: MutableLiveData<List<MovieModel>>() {
+            override fun onActive() {
+                super.onActive()
+                job?.let { theJob ->
+                    CoroutineScope(IO + theJob).launch {
+                        val movieListResponse = MyRetrofitBuilder.apiService.getPopularMovie(key, page)
+                        withContext(Main) {
+                            if (movieListResponse.isSuccessful) {
+                                value = movieListResponse.body()?.movies
+                                total_pages = movieListResponse.body()?.total_pages ?:
+                                        Log.v("Response", "The call is successful")
+                            } else {
+                                try {
+                                    Log.v("Tag", "Error ${movieListResponse.errorBody()}")
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
+                                }
+                            }
+                            theJob.complete()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fun getGenreList(key: String): List<Genre> {
+        val genreResponse = MyRetrofitBuilder.apiService.getGenreList(key)
+        var genres: List<Genre> = listOf()
+        if (genreResponse.isSuccessful) {
+            genres = genreResponse.body()?.genres!!
+            Log.v("Response", "The call is successful")
+        } else {
+            try {
+                Log.v("Tag", "Error ${genreResponse.errorBody()}")
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return genres
     }
     fun cancelJob() {
         job?.cancel()

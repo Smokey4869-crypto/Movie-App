@@ -1,6 +1,6 @@
 package com.example.myapplication.api
 
-import com.example.myapplication.models.MovieModel
+import com.example.myapplication.response.GenreResponse
 import com.example.myapplication.response.MovieResponse
 import com.example.myapplication.response.MovieSearchResponse
 import retrofit2.Response
@@ -25,4 +25,16 @@ interface ApiService {
         @Path("movie_id") movie_id: Int,
         @Query("api_key") api_key: String
     ): Response<MovieResponse>
+
+    //Get popular movies
+    @GET("movie/popular")
+    suspend fun getPopularMovie(
+        @Query("api_key") api_key: String,
+        @Query("page") page: Int
+    ): Response<MovieSearchResponse>
+
+    @GET("genre/movie/list")
+    fun getGenreList(
+        @Query("api_key") api_key: String
+    ): Response<GenreResponse>
 }

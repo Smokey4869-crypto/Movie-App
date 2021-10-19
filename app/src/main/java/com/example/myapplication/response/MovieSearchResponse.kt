@@ -7,10 +7,14 @@ import com.google.gson.annotations.SerializedName
 //this class is for getting multiple movies (Movies list)
 class MovieSearchResponse {
     @SerializedName("total_results")
-    @Expose()
+    @Expose
     var total_count: Int = 0
 
     @SerializedName("results")
-    @Expose()
+    @Expose
     lateinit var movies: List<MovieModel>
+
+    @SerializedName("total_pages")
+    @Expose
+    var total_pages: Int = 0
 }

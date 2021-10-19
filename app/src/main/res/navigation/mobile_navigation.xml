@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/homeTabFragment">
+
+    <fragment
+        android:id="@+id/favoriteTabFragment"
+        android:name="com.example.myapplication.fragments.FavoriteTabFragment"
+        android:label="@string/favorite_tab"
+        tools:layout="@layout/fragment_favorite_tab" />
+    <fragment
+        android:id="@+id/homeTabFragment"
+        android:name="com.example.myapplication.fragments.HomeTabFragment"
+        android:label="@string/home_tab"
+        tools:layout="@layout/fragment_home_tab" />
+    <fragment
+        android:id="@+id/settingTabFragment"
+        android:name="com.example.myapplication.fragments.SettingTabFragment"
+        android:label="@string/setting_tab"
+        tools:layout="@layout/fragment_setting_tab" />
+</navigation>

@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/movie_backdrop"
         android:layout_width="411dp"
         android:layout_height="232dp"
         android:layout_alignParentStart="true"
@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/inuyasha_movie_3_backdrop" />
+        app:srcCompat="@drawable/inuyasha_movie_3_backdrop"
+        android:contentDescription="@string/movie_backdrop" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/movie_backdrop"
         app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +44,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="140dp"
                 android:gravity="left"
-                android:text="Movie title"
+                android:text="@string/movie_title"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:gravity="left"
-                android:text="29/01/2001"
+                android:text="@string/movie_release_date"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:gravity="left"
-                android:text="genre1 | genre2 | genre3"
+                android:text="@string/genre1_genre2_genre3"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.652"
@@ -76,6 +77,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/movie_release_date" />
 
             <RatingBar
+                android:id="@+id/rating_bar"
                 style="@style/RatingBar"
                 android:layout_width="234dp"
                 android:layout_height="48dp"
@@ -84,29 +86,66 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.928"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-            <TextView
-                android:id="@+id/movie_overview"
-                android:layout_width="368dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="348dp"
-                android:gravity="left"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/movie_content"
+                android:layout_width="380dp"
+                android:layout_height="376dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="11dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintHorizontal_bias="0.586"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating_bar"
+                app:layout_constraintVertical_bias="0.067">
 
-            </TextView>
+<!--                <com.ms.square.android.expandabletextview.ExpandableTextView-->
+<!--                    android:id="@+id/movie_overview"-->
+<!--                    android:layout_width="221dp"-->
+<!--                    android:layout_height="216dp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/expandable_text"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:fontFamily="sans-serif-light"-->
+<!--                        android:text="HELLO"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="16sp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/expand_collapse"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="right|bottom"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:padding="16dp" />-->
+<!--                </com.ms.square.android.expandabletextview.ExpandableTextView>-->
+
+                <Button
+                    android:id="@+id/add_to_list"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@drawable/icon_heart_white"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </LinearLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/movie_poster"
         android:layout_width="142dp"
         android:layout_height="214dp"
         android:layout_alignParentEnd="true"

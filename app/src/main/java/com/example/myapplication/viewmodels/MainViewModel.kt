@@ -11,12 +11,16 @@ class MainViewModel: ViewModel() {
     private var movieId: MutableLiveData<Int> = MutableLiveData()
     private var query: MutableLiveData<String> = MutableLiveData()
     private var page: MutableLiveData<Int> = MutableLiveData()
-
+    private var total_pages: Int = Repository.total_pages
     private var liveMovieQuery = PairMediatorLiveData(page, query)
 
     init {
         page.value = 1
     }
+    val popularMovies: LiveData<List<MovieModel>> = Transformations
+        .switchMap(page) {
+            page.value?.let { it1 -> Repository.getPopularMovie(key, it1) }
+        }
     //getting movie(s) methods
     val movies: LiveData<List<MovieModel>> = Transformations
         .switchMap(liveMovieQuery) {
@@ -38,8 +42,23 @@ class MainViewModel: ViewModel() {
         Log.v("Test Query", query.value.toString())
     }
     fun searchNextPage() {
-        page.value = page.value?.plus(1)
-        Log.v("Test Page", page.value.toString())
+        page.value?.let {
+            if (page.value!!.toInt() < total_pages) {
+                page.value = page.value?.plus(1)
+                Log.v("Test Page", "We are in " + page.value.toString())
+            } else {}
+        }
+    }
+    fun searchLastPage() {
+        page.value?.let {
+            if (page.value!! > 1) {
+                page.value = page.value?.minus(1)
+                Log.v("Test Page", "We are in " + page.value.toString())
+            }
+        }
+    }
+    fun setPage(pageNum: Int) {
+        page.value = 1
     }
 
     fun cancelJobs() {
