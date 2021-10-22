@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "389642302779",
+    "project_id": "movie-app-cd3db",
+    "storage_bucket": "movie-app-cd3db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389642302779:android:1fc2a5d9b2df535d52f31e",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389642302779-0orlimf2ftp8u3fhm9vikg0hjcsmg7rh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfn8lBMyNAXkBvcA268jN7lwUd7-QybSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389642302779-0orlimf2ftp8u3fhm9vikg0hjcsmg7rh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

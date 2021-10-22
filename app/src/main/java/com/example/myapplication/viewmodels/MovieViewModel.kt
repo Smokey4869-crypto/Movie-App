@@ -3,15 +3,15 @@ package com.example.myapplication.viewmodels
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.myapplication.models.MovieModel
-import com.example.myapplication.repository.Repository
+import com.example.myapplication.repository.TMDBRepository
 import com.example.myapplication.utils.Credentials
 
-class MainViewModel: ViewModel() {
+class MovieViewModel: ViewModel() {
     private val key = Credentials.API_KEY
     private var movieId: MutableLiveData<Int> = MutableLiveData()
     private var query: MutableLiveData<String> = MutableLiveData()
     private var page: MutableLiveData<Int> = MutableLiveData()
-    private var total_pages: Int = Repository.total_pages
+    private var total_pages: Int = TMDBRepository.total_pages
     private var liveMovieQuery = PairMediatorLiveData(page, query)
 
     init {
@@ -19,23 +19,19 @@ class MainViewModel: ViewModel() {
     }
     val popularMovies: LiveData<List<MovieModel>> = Transformations
         .switchMap(page) {
-            page.value?.let { it1 -> Repository.getPopularMovie(key, it1) }
+            page.value?.let { it -> TMDBRepository.getPopularMovie(key, it) }
         }
     //getting movie(s) methods
     val movies: LiveData<List<MovieModel>> = Transformations
         .switchMap(liveMovieQuery) {
-            it.second?.let { it1 -> it.first?.let { it2 -> Repository.searchMovie(key, it1, it2) } }
+            it.second?.let { it1 -> it.first?.let { it2 -> TMDBRepository.searchMovie(key, it1, it2) } }
         }
     val movie: LiveData<MovieModel> = Transformations
         .switchMap(movieId) {
-            Repository.getMovie(it, key)
+            TMDBRepository.getMovie(it, key)
         }
 
-    fun setMovieId(movieId: Int) {
-        if (this.movieId.value == movieId)
-            return
-        this.movieId.value = movieId
-    }
+    val genres = TMDBRepository.getGenreList(key)
 
     fun setQuery(newQuery: String) {
         query.value = newQuery
@@ -62,7 +58,7 @@ class MainViewModel: ViewModel() {
     }
 
     fun cancelJobs() {
-        Repository.cancelJob()
+        TMDBRepository.cancelJob()
     }
 
     inner class PairMediatorLiveData<Int, String>( pageNumber: LiveData<Int>, liveQuery: LiveData<String>) : MediatorLiveData<Pair<Int?, String?>>() {

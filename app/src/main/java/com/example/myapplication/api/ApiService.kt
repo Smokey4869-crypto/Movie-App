@@ -34,7 +34,7 @@ interface ApiService {
     ): Response<MovieSearchResponse>
 
     @GET("genre/movie/list")
-    fun getGenreList(
+    suspend fun getGenreList(
         @Query("api_key") api_key: String
     ): Response<GenreResponse>
 }

@@ -7,18 +7,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.DetailActivity
 import com.example.myapplication.R
 import com.example.myapplication.adapter.MovieAdapter
 import com.example.myapplication.models.MovieModel
-import com.example.myapplication.viewmodels.MainViewModel
+import com.example.myapplication.viewmodels.MovieViewModel
 
 
 class HomeTabFragment : Fragment() {
-    private val movieListViewModel: MainViewModel by viewModels()
+    private val movieListViewModel: MovieViewModel by activityViewModels()
     private lateinit var vMovieList: RecyclerView
     private var movieList: List<MovieModel> = listOf()
     private val movieAdapter = MovieAdapter(movieList) {showDetail(it)}
@@ -62,7 +62,8 @@ class HomeTabFragment : Fragment() {
             })
     }
     private fun configureRecyclerView(){
-        val linearLayoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+//        val linearLayoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+        val linearLayoutManager = LinearLayoutManager(this.context)
         vMovieList.adapter = movieAdapter
         vMovieList.layoutManager = linearLayoutManager
 
@@ -82,10 +83,7 @@ class HomeTabFragment : Fragment() {
     }
 
     private fun showDetail(item: MovieModel) {
-        val intent = Intent(activity, DetailActivity::class.java)
-        intent.putExtra("Movie Model", item)
-//        startActivity(intent)
-        Log.v("Test Fragment", "Working")
+
     }
 
     fun setQuery(newQuery: String) {

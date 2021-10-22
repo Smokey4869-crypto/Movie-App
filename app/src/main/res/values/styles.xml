@@ -11,4 +11,12 @@
         <item name="colorControlNormal">#ffd700</item>
         <item name="colorControlActivated">#ffd700</item>
     </style>
+
+    <style name="heartButton" parent="">
+        <item name="backgroundTint">#EE0043</item>
+    </style>
+    <style name="bottomNav">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

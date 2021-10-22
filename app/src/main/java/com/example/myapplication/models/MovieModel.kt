@@ -13,4 +13,7 @@ data class MovieModel (
     var overview: String,
     var backdrop_path: String?,
     var genre_ids: List<Int>): Parcelable {
+
+    //default constructor to use Realtime Firebase DB
+    constructor(): this("","", "", 0, 0.0.toFloat(), "", "", listOf(1))
 }

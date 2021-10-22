@@ -11,10 +11,12 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import java.io.IOException
 
-object Repository {
+object TMDBRepository {
+    //For TMDB Api
     var job: CompletableJob? = null
     var total_pages: Int = 0
 
+    //TMDB API
     fun getMovie(movieId: Int, key: String): LiveData<MovieModel>{
         job = Job()
         return object: LiveData<MovieModel>() {
@@ -31,7 +33,7 @@ object Repository {
                                 try {
                                     Log.v("Tag", "Error ${movieResponse.errorBody()}")
                                 } catch (e: IOException) {
-                                    e.printStackTrace()
+                                    Log.v("ERROR", e.toString())
                                 }
                             }
                             theJob.complete()
@@ -59,7 +61,7 @@ object Repository {
                                 try {
                                     Log.v("Tag", "Error ${movieListResponse.errorBody()}")
                                 } catch (e: IOException) {
-                                    e.printStackTrace()
+                                    Log.v("ERROR", e.toString())
                                 }
                             }
                             theJob.complete()
@@ -82,12 +84,12 @@ object Repository {
                             if (movieListResponse.isSuccessful) {
                                 value = movieListResponse.body()?.movies
                                 total_pages = movieListResponse.body()?.total_pages ?:
-                                        Log.v("Response", "The call is successful")
+                                Log.v("Response", "The call is successful")
                             } else {
                                 try {
                                     Log.v("Tag", "Error ${movieListResponse.errorBody()}")
                                 } catch (e: IOException) {
-                                    e.printStackTrace()
+                                    Log.v("ERROR", e.toString())
                                 }
                             }
                             theJob.complete()
@@ -98,16 +100,25 @@ object Repository {
         }
     }
     fun getGenreList(key: String): List<Genre> {
-        val genreResponse = MyRetrofitBuilder.apiService.getGenreList(key)
-        var genres: List<Genre> = listOf()
-        if (genreResponse.isSuccessful) {
-            genres = genreResponse.body()?.genres!!
-            Log.v("Response", "The call is successful")
-        } else {
-            try {
-                Log.v("Tag", "Error ${genreResponse.errorBody()}")
-            } catch (e: IOException) {
-                e.printStackTrace()
+        job = Job()
+        var genres: List<Genre> = mutableListOf()
+        job?.let { theJob ->
+            CoroutineScope(IO + theJob).launch {
+                val genreResponse = MyRetrofitBuilder.apiService.getGenreList(key)
+                withContext(Main) {
+                    if (genreResponse.isSuccessful) {
+                        genres = genreResponse.body()?.genres!!
+                        genres.forEach {
+                            Log.v("Genre Call", it.name)
+                        }
+                    } else {
+                        try {
+                            Log.v("Tag", "Error ${genreResponse.errorBody()}")
+                        } catch (e: IOException) {
+                            Log.v("ERROR", e.toString())
+                        }
+                    }
+                }
             }
         }
         return genres
@@ -115,4 +126,6 @@ object Repository {
     fun cancelJob() {
         job?.cancel()
     }
+
+
 }

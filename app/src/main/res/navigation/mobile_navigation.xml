@@ -9,15 +9,46 @@
         android:id="@+id/favoriteTabFragment"
         android:name="com.example.myapplication.fragments.FavoriteTabFragment"
         android:label="@string/favorite_tab"
-        tools:layout="@layout/fragment_favorite_tab" />
+        tools:layout="@layout/fragment_favorite_tab" >
+        <action
+            android:id="@+id/action_favoriteTabFragment_to_detailFavListFragment"
+            app:destination="@id/detailFavListFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/homeTabFragment"
         android:name="com.example.myapplication.fragments.HomeTabFragment"
         android:label="@string/home_tab"
-        tools:layout="@layout/fragment_home_tab" />
+        tools:layout="@layout/fragment_home_tab" >
+        <action
+            android:id="@+id/action_homeTabFragment_to_detailFragment"
+            app:destination="@id/detailActivity" />
+    </fragment>
+
     <fragment
         android:id="@+id/settingTabFragment"
         android:name="com.example.myapplication.fragments.SettingTabFragment"
         android:label="@string/setting_tab"
-        tools:layout="@layout/fragment_setting_tab" />
+        tools:layout="@layout/fragment_setting_tab" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFavListFragment"
+        android:name="com.example.myapplication.fragments.ShowFavoriteItemFragment"
+        tools:layout="@layout/fragment_show_favorite_item">
+        <argument
+            android:name="favoriteItems"
+            app:argType="com.example.myapplication.models.FavoriteList" />
+    </fragment>
+    <activity
+        android:id="@+id/detailActivity"
+        android:name="com.example.myapplication.DetailActivity"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="chosenMovie"
+            app:argType="com.example.myapplication.models.MovieModel" />
+    </activity>
+
+
 </navigation>
