@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ứng dụng của tôi </string>
+    <string name="movie_title">Tiêu đề</string>
+    <string name="genre1_genre2_genre3">thể loại 1 | thể loại 2</string>
+    <string name="movie_release_date">29/01/2001</string>
+    <string name="movie_backdrop">Backdrop phim</string>
+    <string name="home">Trang chủ</string>
+    <string name="favorite">Yêu thích</string>
+    <string name="setting">Cài đặt</string>
+    <string name="favorite_tab">Yêu thích</string>
+    <string name="home_tab">Trang chủ</string>
+    <string name="setting_tab">Cài đật</string>
+    <string name="save">Lưu</string>
+    <string name="add_new_list">Thêm danh mục yêu thích</string>
+    <string name="hint">Tên danh mục....</string>
+    <string name="cancel">Hủy</string>
+    <string name="add">Thêm</string>
+    <string name="add_movie_to">Thêm phim vào...</string>
+    <string name="create_new_list">Tạo danh mục mới</string>
+
+    <!--Language Setting-->
+    <string name="language">Ngôn ngữ</string>
+    <string name="selectedLang">English</string>
+    <string name="others"></string>
+</resources>

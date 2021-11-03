@@ -9,6 +9,7 @@ import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.example.myapplication.fragments.AddMovieFragment
 import com.example.myapplication.models.Genre
+import com.example.myapplication.models.MovieModel
 import com.example.myapplication.utils.Credentials
 import com.example.myapplication.viewmodels.FirebaseViewModel
 import com.example.myapplication.viewmodels.MovieViewModel
@@ -16,16 +17,17 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.ms.square.android.expandabletextview.ExpandableTextView
 
 class DetailActivity: AppCompatActivity() {
-    private val args by navArgs<DetailActivityArgs>()
+    private lateinit var movie: MovieModel
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     private val movieViewModel: MovieViewModel by viewModels()
-    private lateinit var genres: List<Genre>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val movie = args.chosenMovie
-        genres = movieViewModel.genres
-        movie.let {
+        setContentView(R.layout.activity_detail)
+
+        val movie = intent.getParcelableExtra<MovieModel>("movie")
+        val genres = intent.getParcelableArrayListExtra<Genre>("genres")
+        movie?.let {
             //text views
             val vTitle = findViewById<TextView>(R.id.movie_title)
             val vReleaseDate = findViewById<TextView>(R.id.movie_release_date)
@@ -39,17 +41,16 @@ class DetailActivity: AppCompatActivity() {
             val heartBtn = findViewById<Button>(R.id.heart_button)
 
             //Parse text
-            var genreText = ""
-//            movie.genre_ids.forEach { genreId ->
-//                genres.forEach {
-//                    if (it.id == genreId) {
-//                        genreText += it.name + "|"
-//                    }
-//                }
-//            }
-//            genreText += Genre.getGenre(movie.genre_ids[movie.genre_ids.size-1])
-            vGenre.text = genreText
-
+            var text: String = ""
+            for (i in 0..movie.genre_ids.size-2) {
+                genres?.forEach { genre ->
+                    if (movie.genre_ids[i] == genre.id)
+                        text += genre.name + "|"
+                    if (movie.genre_ids[movie.genre_ids.size-1] == genre.id)
+                        text += genre.name
+                }
+            }
+            vGenre.text = text
 
             vTitle.text = movie.title
             vReleaseDate.text = movie.release_date
@@ -78,7 +79,7 @@ class DetailActivity: AppCompatActivity() {
     }
 
     private fun checkFavorite() {
-        val movie = args.chosenMovie
+
 
     }
 }

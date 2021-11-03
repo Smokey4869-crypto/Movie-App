@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="movie_title">題名</string>
+    <string name="genre1_genre2_genre3">ジャンル1 | ジャンル2 |ジャンル3</string>
+    <string name="movie_release_date">29/01/2001</string>
+    <string name="movie_backdrop">映画の背景</string>
+    <string name="home">ホーム</string>
+    <string name="favorite">お気に入り</string>
+    <string name="setting">設定</string>
+    <string name="favorite_tab">お気に入り</string>
+    <string name="home_tab">ホーム</string>
+    <string name="setting_tab">設定</string>
+    <string name="save">保存</string>
+    <string name="add_new_list">お気に入りを追加</string>
+    <string name="hint">リスト名...</string>
+    <string name="cancel">キャンセル</string>
+    <string name="add">たす</string>
+    <string name="add_movie_to">リストに映画を追加する</string>
+    <string name="create_new_list">リストを作成する</string>
+
+    <!--Language Setting-->
+    <string name="language">言語</string>
+    <string name="selectedLang">English</string>
+    <string name="others"></string>
+</resources>

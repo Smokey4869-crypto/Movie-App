@@ -99,29 +99,33 @@ object TMDBRepository {
             }
         }
     }
-    fun getGenreList(key: String): List<Genre> {
+    fun getGenreList(key: String): MutableLiveData<List<Genre>> {
         job = Job()
         var genres: List<Genre> = mutableListOf()
-        job?.let { theJob ->
-            CoroutineScope(IO + theJob).launch {
-                val genreResponse = MyRetrofitBuilder.apiService.getGenreList(key)
-                withContext(Main) {
-                    if (genreResponse.isSuccessful) {
-                        genres = genreResponse.body()?.genres!!
-                        genres.forEach {
-                            Log.v("Genre Call", it.name)
-                        }
-                    } else {
-                        try {
-                            Log.v("Tag", "Error ${genreResponse.errorBody()}")
-                        } catch (e: IOException) {
-                            Log.v("ERROR", e.toString())
+        return object: MutableLiveData<List<Genre>>() {
+            override fun onActive() {
+                super.onActive()
+                job?.let { theJob ->
+                    CoroutineScope(IO + theJob).launch {
+                        val genreResponse = MyRetrofitBuilder.apiService.getGenreList(key)
+                        withContext(Main) {
+                            if (genreResponse.isSuccessful) {
+                                value = genreResponse.body()?.genres
+                                value?.forEach {
+                                    Log.v("Genre Call", it.name)
+                                }
+                            } else {
+                                try {
+                                    Log.v("Tag", "Error ${genreResponse.errorBody()}")
+                                } catch (e: IOException) {
+                                    Log.v("ERROR", e.toString())
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        return genres
     }
     fun cancelJob() {
         job?.cancel()

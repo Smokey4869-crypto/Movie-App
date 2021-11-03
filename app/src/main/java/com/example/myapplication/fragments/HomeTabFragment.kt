@@ -2,6 +2,7 @@ package com.example.myapplication.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +12,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.DetailActivity
 import com.example.myapplication.R
 import com.example.myapplication.adapter.MovieAdapter
+import com.example.myapplication.models.Genre
 import com.example.myapplication.models.MovieModel
 import com.example.myapplication.viewmodels.MovieViewModel
 
@@ -23,6 +26,7 @@ class HomeTabFragment : Fragment() {
     private var movieList: List<MovieModel> = listOf()
     private val movieAdapter = MovieAdapter(movieList) {showDetail(it)}
     private var isPopular: Boolean = true
+    private lateinit var genres: List<Genre>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +44,17 @@ class HomeTabFragment : Fragment() {
         observeMoviesChange()
         if (isPopular)
             observePopMovies()
+        getMovieGenres()
     }
 
+    private fun getMovieGenres() {
+        movieListViewModel.genres.observe(viewLifecycleOwner,
+            { t ->
+                if (t != null) {
+                    genres = t
+                }
+            })
+    }
     private fun observeMoviesChange() {
         movieListViewModel.movies.observe(viewLifecycleOwner,
             { t ->
@@ -83,7 +96,12 @@ class HomeTabFragment : Fragment() {
     }
 
     private fun showDetail(item: MovieModel) {
-
+        val intent = Intent(activity, DetailActivity::class.java)
+        val genresArray: ArrayList<Genre> = arrayListOf()
+        genresArray.addAll(genres)
+        intent.putParcelableArrayListExtra("genres", genresArray)
+        intent.putExtra("Movie Model", item)
+        startActivity(intent)
     }
 
     fun setQuery(newQuery: String) {

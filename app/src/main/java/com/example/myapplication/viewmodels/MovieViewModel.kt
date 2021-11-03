@@ -2,6 +2,7 @@ package com.example.myapplication.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.myapplication.models.Genre
 import com.example.myapplication.models.MovieModel
 import com.example.myapplication.repository.TMDBRepository
 import com.example.myapplication.utils.Credentials
@@ -31,7 +32,7 @@ class MovieViewModel: ViewModel() {
             TMDBRepository.getMovie(it, key)
         }
 
-    val genres = TMDBRepository.getGenreList(key)
+    val genres : LiveData<List<Genre>> = TMDBRepository.getGenreList(key)
 
     fun setQuery(newQuery: String) {
         query.value = newQuery
