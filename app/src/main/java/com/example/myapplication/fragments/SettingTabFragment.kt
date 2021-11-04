@@ -12,7 +12,7 @@ import android.widget.Spinner
 import com.example.myapplication.R
 import com.example.myapplication.languages.LocaleHelper
 
-class SettingTabFragment : Fragment() {
+class SettingTabFragment : BaseFragment() {
     private lateinit var spinner: Spinner
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
