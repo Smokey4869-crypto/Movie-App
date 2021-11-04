@@ -18,7 +18,7 @@ import com.example.myapplication.models.FavoriteList
 import com.example.myapplication.viewmodels.FirebaseViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class FavoriteTabFragment : Fragment() {
+class FavoriteTabFragment : BaseFragment() {
     private val favListViewModel: FirebaseViewModel by activityViewModels()
     private lateinit var vFavList: RecyclerView
     private var favoriteList: List<FavoriteList> = listOf()
