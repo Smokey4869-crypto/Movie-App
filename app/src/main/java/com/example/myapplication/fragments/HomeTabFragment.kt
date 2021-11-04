@@ -20,7 +20,7 @@ import com.example.myapplication.models.MovieModel
 import com.example.myapplication.viewmodels.MovieViewModel
 
 
-class HomeTabFragment : Fragment() {
+class HomeTabFragment : BaseFragment() {
     private val movieListViewModel: MovieViewModel by activityViewModels()
     private lateinit var vMovieList: RecyclerView
     private var movieList: List<MovieModel> = listOf()
@@ -36,15 +36,18 @@ class HomeTabFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_home_tab, container, false) as View
         vMovieList = view.findViewById(R.id.fragment_home_tab)
         configureRecyclerView()
+        callNetworkConnection()
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeMoviesChange()
-        if (isPopular)
-            observePopMovies()
-        getMovieGenres()
+        if (haveInternet) {
+            observeMoviesChange()
+            if (isPopular)
+                observePopMovies()
+            getMovieGenres()
+        }
     }
 
     private fun getMovieGenres() {
