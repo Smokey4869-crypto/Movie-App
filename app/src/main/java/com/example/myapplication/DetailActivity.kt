@@ -1,11 +1,9 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.example.myapplication.fragments.AddMovieFragment
 import com.example.myapplication.models.Genre
@@ -25,7 +23,7 @@ class DetailActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val movie = intent.getParcelableExtra<MovieModel>("movie")
+        val movie = intent.getParcelableExtra<MovieModel>("Movie Model")
         val genres = intent.getParcelableArrayListExtra<Genre>("genres")
         movie?.let {
             //text views
@@ -41,15 +39,18 @@ class DetailActivity: AppCompatActivity() {
             val heartBtn = findViewById<Button>(R.id.heart_button)
 
             //Parse text
-            var text: String = ""
+            var text = ""
             for (i in 0..movie.genre_ids.size-2) {
                 genres?.forEach { genre ->
                     if (movie.genre_ids[i] == genre.id)
-                        text += genre.name + "|"
-                    if (movie.genre_ids[movie.genre_ids.size-1] == genre.id)
-                        text += genre.name
+                        text += genre.name + ", "
                 }
             }
+            genres?.forEach { genre ->
+                if (movie.genre_ids[movie.genre_ids.size-1] == genre.id)
+                    text += genre.name
+            }
+
             vGenre.text = text
 
             vTitle.text = movie.title
@@ -79,7 +80,6 @@ class DetailActivity: AppCompatActivity() {
     }
 
     private fun checkFavorite() {
-
 
     }
 }
