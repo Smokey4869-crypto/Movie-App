@@ -34,6 +34,9 @@ class FirebaseViewModel(app: Application): AndroidViewModel(app) {
             Log.v("Check Firebase Query", "Add Empty: $succeeded")
         }
     }
+    fun addFavoriteMovieToList(listName: String, movie: MovieModel) {
+        FirebaseRepository.addFavoriteMovieToList(listName, movie)
+    }
     fun deleteFavoriteList(listName: String) {
         succeeded.value = FirebaseRepository.deleteFavoriteList(listName)
         if (!succeeded.value!!){
@@ -45,6 +48,9 @@ class FirebaseViewModel(app: Application): AndroidViewModel(app) {
         return exist
     }
 
+    fun checkFavorite(movie: MovieModel): LiveData<Boolean> {
+        return FirebaseRepository.ifFavoriteMovieExists(movie)
+    }
     fun cancelJobs() {
         FirebaseRepository.cancelJob()
     }

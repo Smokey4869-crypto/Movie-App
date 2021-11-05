@@ -2,7 +2,6 @@ package com.example.myapplication.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.models.FavoriteList
 import com.example.myapplication.models.MovieModel
 import com.google.firebase.database.*
@@ -13,7 +12,6 @@ import kotlinx.coroutines.Dispatchers.Main
 object FirebaseRepository {
     var job: CompletableJob? = null
     val dbRef = FirebaseDatabase.getInstance().getReference("Favorites")
-    val allLists: LiveData<List<FavoriteList>> = getAllFavoriteList()
 
     fun getAllFavoriteList(): LiveData<List<FavoriteList>> {
         job = Job()
@@ -29,7 +27,7 @@ object FirebaseRepository {
                                     val child = ds.key
                                     if (child != null) {
                                         Log.d("TAG", child)
-                                        if (ds.childrenCount.toInt().equals(0)) {
+                                        if (ds.childrenCount.toInt() == 0) {
                                             val fav = FavoriteList(child, ds.childrenCount, null)
                                             favList.add(fav)
                                         } else {
@@ -67,9 +65,9 @@ object FirebaseRepository {
         job = Job()
         job?.let { theJob ->
             CoroutineScope(IO + theJob).launch {
-                dbRef.child(listName).setValue(movie
-                ) { error, ref ->
-                    Log.v("Test Query", "Value was set. Error = ${error}")
+                dbRef.child(listName).child(movie.id.toString()).setValue(movie
+                ) { error, _ ->
+                    Log.v("Test Query", "Value was set. Error = $error")
                     added = true
                 }
             }
@@ -82,8 +80,8 @@ object FirebaseRepository {
         job?.let { theJob ->
             CoroutineScope(IO + theJob).launch {
                 dbRef.child(listName).setValue("empty"
-                ) { error, ref ->
-                    Log.v("Test Query", "Value was set. Error = ${error}")
+                ) { error, _ ->
+                    Log.v("Test Query", "Value was set. Error = $error")
                     added = true
                 }
             }
@@ -97,13 +95,24 @@ object FirebaseRepository {
         job?.let { theJob ->
             CoroutineScope(IO + theJob).launch {
                 dbRef.child(listName).removeValue()
-                { error, ref ->
-                    Log.v("Test Query", "Value was removed. Error = ${error}")
+                { error, _ ->
+                    Log.v("Test Query", "Value was removed. Error = $error")
                     deleted = true
                 }
             }
         }
         return deleted
+    }
+
+    fun addFavoriteMovieToList(listName: String, movie: MovieModel) {
+        job = Job()
+        job?.let { theJob ->
+            CoroutineScope(IO + theJob).launch{
+                dbRef.child(listName).child(movie.id.toString()).setValue(movie) {
+                        error, _ -> Log.v("Test Query", "Value was set. Error = $error")
+                }
+            }
+        }
     }
 
     fun ifListExists(listName: String): Boolean {
@@ -121,22 +130,27 @@ object FirebaseRepository {
         return exists
     }
 
-    fun ifFavoriteMovieExists(movie: MovieModel): Boolean {
-        var exists = false
+    fun ifFavoriteMovieExists(movie: MovieModel): LiveData<Boolean> {
         job = Job()
-        job?.let { theJob ->
-            CoroutineScope(IO + theJob).launch {
-                dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                    }
+        return object: LiveData<Boolean>() {
+            override fun onActive() {
+                super.onActive()
+                job?.let { theJob ->
+                    CoroutineScope(IO + theJob).launch {
+                        dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for (child in snapshot.children) {
+                                    value = child.hasChild(movie.id.toString())
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                            }
 
-                    override fun onCancelled(error: DatabaseError) {
+                        })
                     }
-
-                })
+                }
             }
         }
-        return exists
     }
 
     fun cancelJob() {

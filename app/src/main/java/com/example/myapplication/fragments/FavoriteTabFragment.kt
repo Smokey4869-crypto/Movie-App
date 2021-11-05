@@ -18,7 +18,7 @@ import com.example.myapplication.models.FavoriteList
 import com.example.myapplication.viewmodels.FirebaseViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class FavoriteTabFragment : BaseFragment() {
+class FavoriteTabFragment : Fragment() {
     private val favListViewModel: FirebaseViewModel by activityViewModels()
     private lateinit var vFavList: RecyclerView
     private var favoriteList: List<FavoriteList> = listOf()
@@ -57,7 +57,6 @@ class FavoriteTabFragment : BaseFragment() {
             val transaction = childFragmentManager.beginTransaction()
             transaction.replace(R.id.add_fragment, addFragment)
             transaction.commit()
-
             Toast.makeText(activity, "Edit favorites", Toast.LENGTH_LONG).show()
         }
         delBtn.setOnClickListener {
