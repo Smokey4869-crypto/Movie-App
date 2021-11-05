@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.myapplication.fragments.AddMovieFragment
+import com.example.myapplication.models.FavoriteList
 import com.example.myapplication.models.Genre
 import com.example.myapplication.models.MovieModel
 import com.example.myapplication.utils.Credentials
@@ -15,9 +16,8 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.ms.square.android.expandabletextview.ExpandableTextView
 
 class DetailActivity: AppCompatActivity() {
-    private lateinit var movie: MovieModel
     private val firebaseViewModel: FirebaseViewModel by viewModels()
-    private val movieViewModel: MovieViewModel by viewModels()
+    private lateinit var favoriteLists: List<FavoriteList>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +25,8 @@ class DetailActivity: AppCompatActivity() {
 
         val movie = intent.getParcelableExtra<MovieModel>("Movie Model")
         val genres = intent.getParcelableArrayListExtra<Genre>("genres")
+        getAllFavoriteLists()
+
         movie?.let {
             //text views
             val vTitle = findViewById<TextView>(R.id.movie_title)
@@ -68,10 +70,17 @@ class DetailActivity: AppCompatActivity() {
             }
             ratingBar.rating = movie.vote_average / 2
 
+            if (checkFavorite(movie))
+                heartBtn.setBackgroundResource(R.drawable.icon_heart_red)
+            else heartBtn.setBackgroundResource(R.drawable.icon_heart_white)
+
             heartBtn.setOnClickListener {
                 val addFragment = AddMovieFragment()
                 val bundle = Bundle()
                 bundle.putParcelable("movie", movie)
+                val favoriteListsArray: ArrayList<FavoriteList> = arrayListOf()
+                favoriteListsArray.addAll(favoriteLists)
+                bundle.putParcelableArrayList("favorite", favoriteListsArray)
                 addFragment.arguments = bundle
                 addFragment.show(supportFragmentManager, "Add Movie to List")
                 Toast.makeText(this, "Edit favorites", Toast.LENGTH_LONG).show()
@@ -79,8 +88,21 @@ class DetailActivity: AppCompatActivity() {
         }
     }
 
-    private fun checkFavorite() {
 
+    private fun getAllFavoriteLists() {
+        firebaseViewModel.favoriteLists.observe(this, {
+            if (it != null) {
+                favoriteLists = it
+            }
+        })
+    }
+    private fun checkFavorite(movieModel: MovieModel): Boolean {
+        var checkFavorite = false
+        firebaseViewModel.checkFavorite(movieModel).observe(this, {
+            if (it != null)
+                checkFavorite = it
+        })
+        return checkFavorite
     }
 }
 

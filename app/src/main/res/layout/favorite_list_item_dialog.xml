@@ -13,7 +13,8 @@
             android:layout_height="40dp"
             android:gravity="center_vertical"
             android:textColor="@color/black"
-            android:text="@string/favorite" />
+            android:text="@string/favorite"
+            android:paddingLeft="15dp" />
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -17,6 +17,7 @@ import com.example.myapplication.R
 import com.example.myapplication.adapter.MovieAdapter
 import com.example.myapplication.models.Genre
 import com.example.myapplication.models.MovieModel
+import com.example.myapplication.viewmodels.FirebaseViewModel
 import com.example.myapplication.viewmodels.MovieViewModel
 
 
