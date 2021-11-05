@@ -1,11 +1,13 @@
 package com.example.myapplication.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,16 +20,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AddMovieFragment : BottomSheetDialogFragment() {
     private lateinit var vFavList: RecyclerView
-    private var favoriteList: List<FavoriteList> = listOf()
+    private var favoriteLists: MutableList<FavoriteList> = mutableListOf()
     private val firebaseViewModel: FirebaseViewModel by activityViewModels()
-    private val favAdapter = FavoriteListDialogAdapter(favoriteList) {addMovieToList(it)}
-
+    private val favAdapter = FavoriteListDialogAdapter(favoriteLists)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_add_to_favorite, container, false) as View
+
+        val movie = arguments?.getParcelable<MovieModel>("movie")
 
         vFavList = view.findViewById(R.id.favorite_recycler_view)
         val linearLayoutManager = LinearLayoutManager(this.context)
@@ -37,37 +40,33 @@ class AddMovieFragment : BottomSheetDialogFragment() {
         val cancelBtn = view.findViewById<Button>(R.id.cancel_button)
         cancelBtn.setOnClickListener {
             dismiss()
-
         }
-
+        val tempList = arguments?.getParcelableArrayList<FavoriteList>("favorite")
+        if (tempList != null) {
+            favoriteLists.addAll(tempList)
+        }
+        val addBtn = view.findViewById<Button>(R.id.add_movie)
+        addBtn.setOnClickListener {
+            favoriteLists.forEach {
+                if (it.chosen) {
+                    if (movie != null) {
+                        firebaseViewModel.addFavoriteMovieToList(it.listName, movie)
+                        dismiss()
+                        Toast.makeText(activity, "Movie has been added", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        firebaseViewModel.favoriteLists.observe(viewLifecycleOwner,
-            { t ->
-                if (t != null) {
-                    favAdapter.setFavoriteList(t)
-                }
-            })
-    }
 
-    private fun addMovieToList(item: FavoriteList) {
-        val movie = arguments?.getParcelable<MovieModel>("movie")
-        movie?.let {
-            firebaseViewModel.addFavoriteListWithInitialMovie(item.listName, movie)
-        }
-
-    }
-
-    class FavoriteListDialogAdapter(private var favoriteList: List<FavoriteList>,
-                                          private val listener: (FavoriteList) -> Unit): RecyclerView.Adapter<FavoriteListDialogAdapter.ViewHolder>() {
+    class FavoriteListDialogAdapter(private var favoriteList: List<FavoriteList>): RecyclerView.Adapter<FavoriteListDialogAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater
-                .inflate(R.layout.favorite_list_item, parent, false) as View
+                .inflate(R.layout.favorite_list_item_dialog, parent, false) as View
             return ViewHolder(view)
         }
 
@@ -86,7 +85,8 @@ class AddMovieFragment : BottomSheetDialogFragment() {
             fun bind(item: FavoriteList) {
                 vFavName.text = item.listName
                 vFavName.setOnClickListener {
-                    listener(item)
+                    vFavName.setBackgroundColor(Color.parseColor("#526BF8"))
+                    item.chosen = true
                 }
             }
         }

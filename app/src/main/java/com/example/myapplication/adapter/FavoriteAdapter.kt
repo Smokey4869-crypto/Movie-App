@@ -12,7 +12,7 @@ import com.example.myapplication.models.MovieModel
 import com.example.myapplication.utils.Credentials
 
 //this class is for favorite movies in each favorite playlist
-class FavoriteAdapter (private var favMovies: List<MovieModel>?,
+class FavoriteAdapter (private var favMovies: List<MovieModel>,
                        private val listener: (MovieModel) -> Unit): RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteAdapter.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -21,13 +21,10 @@ class FavoriteAdapter (private var favMovies: List<MovieModel>?,
         return ViewHolder(view)
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        favMovies?.get(position)?.let { holder.bind(it) }
+        holder.bind(favMovies[position])
     }
     override fun getItemCount(): Int {
-        if (favMovies != null) {
-            return favMovies!!.size
-        }
-        return 0
+        return favMovies.size
     }
 
     fun setFavMovies(list: List<MovieModel>) {
@@ -49,6 +46,9 @@ class FavoriteAdapter (private var favMovies: List<MovieModel>?,
             vName.text = item.title
             val text = "Score: ${item.vote_average/2}/5"
             vRating.text = text
+            vImage.setOnClickListener {
+                listener(item)
+            }
         }
     }
 
