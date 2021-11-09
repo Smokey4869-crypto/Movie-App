@@ -76,6 +76,10 @@ class DetailActivity: AppCompatActivity() {
                 heartBtn.setBackgroundResource(R.drawable.icon_heart_red)
             else heartBtn.setBackgroundResource(R.drawable.icon_heart_white)
 
+            if (checkFavorite(movie))
+                heartBtn.setBackgroundResource(R.drawable.icon_heart_red)
+            else heartBtn.setBackgroundResource(R.drawable.icon_heart_white)
+
             heartBtn.setOnClickListener {
                 val addFragment = AddMovieFragment()
                 val bundle = Bundle()
