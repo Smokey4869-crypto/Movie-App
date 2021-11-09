@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +51,8 @@ class AddMovieFragment : BottomSheetDialogFragment() {
                 if (it.chosen) {
                     if (movie != null) {
                         firebaseViewModel.addFavoriteMovieToList(it.listName, movie)
+                        dismiss()
+                        Toast.makeText(activity, "Movie has been added", Toast.LENGTH_LONG).show()
                     }
                 }
             }

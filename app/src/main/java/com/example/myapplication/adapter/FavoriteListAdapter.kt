@@ -46,8 +46,7 @@ class FavoriteListAdapter(private var favoriteList: List<FavoriteList>,
             vPlaylistName.text = item.listName
 
             item.movieNum.let {
-                val text: String
-                text = if (it.toInt().equals(0) || it.toInt().equals(1)) "$it video"
+                val text: String = if (it.toInt().equals(0) || it.toInt() == 1) "$it video"
                 else "$it videos"
                 vMovieNum.text = text
             }

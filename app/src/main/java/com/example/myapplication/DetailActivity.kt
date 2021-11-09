@@ -69,6 +69,12 @@ class DetailActivity: AppCompatActivity() {
                     .into(vBackdrop)
             }
             ratingBar.rating = movie.vote_average / 2
+            ratingBar.isEnabled = false
+
+
+            if (checkFavorite(movie))
+                heartBtn.setBackgroundResource(R.drawable.icon_heart_red)
+            else heartBtn.setBackgroundResource(R.drawable.icon_heart_white)
 
             if (checkFavorite(movie))
                 heartBtn.setBackgroundResource(R.drawable.icon_heart_red)
