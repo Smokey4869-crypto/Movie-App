@@ -10,6 +10,6 @@
 
 <h4 align="left">⚡Database </h4>
 
-Firebase Realtime Database 
-TMDB Database
+<h6 align="left"> Firebase Realtime Database </h6>
+<h6 align="left"> TMDB Database </h6>
 
