@@ -8,6 +8,11 @@
 [![Android Studio](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#)
 [![Kotlin](https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white)](#)
 
+<h4 align="left"> 🖍 Architecture/Design Pattern </h4>
+
+<h6 align="left"> MVVM model </h6>
+<h6 align="left"> Singleton Design Pattern </h6>
+
 <h4 align="left">⚡Database </h4>
 
 <h6 align="left"> Firebase Realtime Database </h6>
